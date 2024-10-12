@@ -1,7 +1,6 @@
 package openrgb
 
 import (
-	"slices"
 	"sync"
 )
 
@@ -62,7 +61,13 @@ func (eh *ExchangeHandler) Delete(commandId NetPacketId, responseCh chan *NetPac
 	if len(requests) == 0 {
 		return
 	}
-	eh.requests[commandId] = slices.DeleteFunc(requests, func(it chan *NetPacket) bool { return it == responseCh })
+	reqs := []chan *NetPacket{}
+	for _, r := range requests {
+		if r != responseCh {
+			reqs = append(reqs, r)
+		}
+	}
+	eh.requests[commandId] = reqs
 }
 
 // Sends a nil to all active handles.
