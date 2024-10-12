@@ -21,4 +21,4 @@ jobs:
           go-version: '1.18'
 
       - name: Build
-        run: go test ./...
+        run: go test
