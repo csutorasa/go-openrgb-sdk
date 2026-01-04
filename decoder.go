@@ -32,7 +32,7 @@ func (d *NetPacketDecoder) Decode() (*NetPacket, error) {
 
 func (d *NetPacketDecoder) decodeHeader() (*NetPacketHeader, error) {
 	buf := make([]byte, 16)
-	_, err := d.r.Read(buf)
+	_, err := io.ReadFull(d.r, buf)
 	if err != nil {
 		return nil, err
 	}
@@ -54,7 +54,7 @@ func (d *NetPacketDecoder) decodeHeader() (*NetPacketHeader, error) {
 
 func (d *NetPacketDecoder) decodeData(header *NetPacketHeader) (NetPacketData, error) {
 	buf := make([]byte, header.PktSize)
-	_, err := d.r.Read(buf)
+	_, err := io.ReadFull(d.r, buf)
 	if err != nil {
 		return nil, err
 	}
